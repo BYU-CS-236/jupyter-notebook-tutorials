@@ -1,0 +1,54 @@
+""" Add a FSM to manage the FSAs, and output a token object
+    depending on what the FSAs do.
+    
+    Michael A. Goodrich
+    1 February 2023 
+"""
+
+from FSA_Classes import *
+
+class manager_FSM:
+    def __init__(self):
+        self.output = "EOF" # Each FSM must provide an output for each state transition
+        # There is only one state, and all transitions are from this state back to itself
+        # The transition function is defined using if else statements
+        # Should I define the state and next state?
+        # Should I define the input alphabet?
+    def run(self,status_dict):
+        if status_dict["COLON FSA"] == True and status_dict["COLON-DASH FSA"] == False:
+            self.output = "COLON"
+        elif status_dict["COLON-DASH FSA"] == True:
+            self.output = "COLON-DASH"
+        elif status_dict["LPAREN FSA"] == True:
+            self.output = "LPAREN"
+        else: 
+            self.output = "ERROR"
+        return self.output
+
+def main():
+    FSA_list = []
+    my_colonDash_FSA = colonDash_FSA(name = "COLON-DASH FSA")
+    FSA_list.append(my_colonDash_FSA)
+    my_colon_FSA = colon_FSA(name = "COLON FSA")
+    FSA_list.append(my_colon_FSA)
+    my_LParen_FSA = LParen_FSA(name = "LPAREN FSA")
+    FSA_list.append(my_LParen_FSA)
+
+    my_manager_FSM = manager_FSM()
+
+    input_strings = [":-", ":", "(",")"]
+    for input_string in input_strings:
+        print("******************")
+        status_dict = dict()
+        for FSA in FSA_list:
+            accept_status = FSA.Run(input_string)
+            #print("The ", FSA.get_FSA_Name(), " accepted (T/F) ", accept_status," when the input was ",input_string)
+            status_dict[FSA.get_FSA_Name()] = accept_status
+            FSA.Reset()
+        token = my_manager_FSM.run(status_dict)
+        print("The output token is ",token," on input", input_string)
+        
+    print("******************")
+
+
+main()
