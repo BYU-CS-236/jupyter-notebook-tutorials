@@ -12,10 +12,11 @@
     
     15 February 2023
 """
+from typing import Callable as function
 
 class FSA:
     """ FSA Base or Super class"""
-    def __init__(self,name):
+    def __init__(self, name: str):
         """ Finite state automata must have a 
         • set of states 
         • start state
@@ -23,13 +24,13 @@ class FSA:
         • set of accept states
         • transition function
         """
-        self.FSA_name = name        # name of your state machine
-        self.start_state = self.S0  # start state always named S0 in this implementation
-        self.accept_states = set()  # set of accept states must be specified in derived class
-        self.input_string = ""      # input string and
-        self.num_chars_read = 0     # current input character
+        self.fsa_name: str = name        # name of your state machine
+        self.start_state: function = self.s0  # start state always named s0 in this implementation
+        self.accept_states: set[function] = set()  # set of accept states must be specified in derived class
+        self.input_string: str = ""      # input string and
+        self.num_chars_read: int = 0     # current input character
     
-    def Run(self,input_string):
+    def run(self, input_string: str) -> bool:
         """ The workhorse of the FSA shared by all the FSAs in project 1.
         • record the input string
         • initialize the start state
@@ -37,88 +38,105 @@ class FSA:
         • transition between states
         • return something useful if the final state is an accept state """
         self.input_string = input_string
-        current_state = self.start_state
+        current_state: function = self.start_state
         while self.num_chars_read < len(self.input_string):
             current_state = current_state()
         if current_state in self.accept_states:
             return True # Output this if the FSA ended in an accept state
         else: 
             return False # Output this if the FSA ended in anything other than an accept state
-    def Reset(self):
+
+    def reset(self) -> None:
         self.num_chars_read = 0
         self.input_string = ""
-    def S0(self):
+
+    def s0(self) -> NotImplemented:
         """ Every FSA must have a start state, and we'll always name 
-        it S0. The method for the start state must be defined in the
+        it s0. The method for the start state must be defined in the
         derived class since it's not defined here. """
         pass
-    def get_FSA_Name(self): return self.FSA_name
 
-class colonDash_FSA(FSA):
-    def __init__(self,name):
-        FSA.__init__(self,name) # You must invoke the __init__ of the parent class
-        self.accept_states.add(self.S2)
-    def S0(self):
+    def get_fsa_name(self) -> str: return self.fsa_name
+
+class ColonDashFSA(FSA):
+    def __init__(self, name):
+        FSA.__init__(self, name) # You must invoke the __init__ of the parent class
+        self.accept_states.add(self.s2)
+
+    def s0(self) -> function:
         """ define the start state in the derived class """
-        #print("In state S0. S0's information is ",self.S0)
-        if self.input_string[self.num_chars_read] != ':': next_state = self.Serr
-        else: next_state = self.S1
-        self.num_chars_read += 1
-        return next_state
-    def S1(self):
-        #print("In state S1. S1's information is ",self.S1)
-        if self.input_string[self.num_chars_read] != '-': next_state = self.Serr
-        else: next_state = self.S2
-        self.num_chars_read += 1
-        return next_state
-    def S2(self):
-        #print("In state S2. S2's information is ",self.S2)
-        next_state = self.Serr # if any inputs, go to error state
-        self.num_chars_read += 1
-        return next_state
-    def Serr(self):
-        #print("In state Serr. Serr's information is ",self.Serr)
-        next_state = self.Serr # stay in error state on all inputs
-        self.num_chars_read += 1
-        return next_state
-    def get_FSA_Name(self): return self.FSA_name
-class colon_FSA(FSA):
-    def __init__(self,name):
-        FSA.__init__(self,name) # You must invoke the __init__ of the parent class
-        self.accept_states.add(self.S1)
-    def S0(self):
-        """ define the start state in the derived class """
-        if self.input_string[self.num_chars_read] != ':': next_state = self.Serr
-        else: next_state = self.S1
-        self.num_chars_read += 1
-        return next_state
-    def S1(self):
-        next_state = self.Serr # if any inputs, go to error state
-        self.num_chars_read += 1
-        return next_state
-    def Serr(self):
-        next_state = self.Serr # stay in error state on all inputs
+        #print("In state s0. s0's information is ",self.s0)
+        next_state: function = None
+        if self.input_string[self.num_chars_read] != ':': next_state = self.s_err
+        else: next_state = self.s1
         self.num_chars_read += 1
         return next_state
 
-class LParen_FSA(FSA):
-    def __init__(self,name):
-        FSA.__init__(self,name) # You must invoke the __init__ of the parent class
-        self.accept_states.add(self.S1)
-    def S0(self):
+    def s1(self) -> function:
+        #print("In state s1. s1's information is ",self.s1)
+        next_state: function = None
+        if self.input_string[self.num_chars_read] != '-': next_state = self.s_err
+        else: next_state = self.s2
+        self.num_chars_read += 1
+        return next_state
+
+    def s2(self) -> function:
+        #print("In state s2. s2's information is ",self.s2)
+        next_state: function = self.s_err # if any inputs, go to error state
+        self.num_chars_read += 1
+        return next_state
+
+    def s_err(self) -> function:
+        #print("In state s_err. s_err's information is ",self.s_err)
+        next_state = self.s_err # stay in error state on all inputs
+        self.num_chars_read += 1
+        return next_state
+
+class ColonFSA(FSA):
+    def __init__(self, name):
+        FSA.__init__(self, name) # You must invoke the __init__ of the parent class
+        self.accept_states.add(self.s1)
+
+    def s0(self) -> function:
         """ define the start state in the derived class """
-        #print("In state S0. S0's information is ",self.S0)
-        if self.input_string[self.num_chars_read] != '(': next_state = self.Serr
-        else: next_state = self.S1
+        next_state: function = None
+        if self.input_string[self.num_chars_read] != ':': next_state = self.s_err
+        else: next_state = self.s1
         self.num_chars_read += 1
         return next_state
-    def S1(self):
-        #print("In state S1. S1's information is ",self.S1)
-        next_state = self.Serr # if any inputs, go to error state
+
+    def s1(self) -> function:
+        next_state: function = self.s_err # if any inputs, go to error state
         self.num_chars_read += 1
         return next_state
-    def Serr(self):
-        #print("In state Serr. Serr's information is ",self.Serr)
-        next_state = self.Serr # stay in error state on all inputs
+
+    def s_err(self) -> function:
+        next_state: function = self.s_err # stay in error state on all inputs
+        self.num_chars_read += 1
+        return next_state
+
+class LeftParenFSA(FSA):
+    def __init__(self, name):
+        FSA.__init__(self, name) # You must invoke the __init__ of the parent class
+        self.accept_states.add(self.s1)
+
+    def s0(self) -> function:
+        """ define the start state in the derived class """
+        #print("In state s0. s0's information is ",self.s0)
+        next_state: function = None
+        if self.input_string[self.num_chars_read] != '(': next_state = self.s_err
+        else: next_state = self.s1
+        self.num_chars_read += 1
+        return next_state
+
+    def s1(self) -> function:
+        #print("In state s1. s1's information is ",self.s1)
+        next_state: function = self.s_err # if any inputs, go to error state
+        self.num_chars_read += 1
+        return next_state
+
+    def s_err(self) -> function:
+        #print("In state s_err. s_err's information is ",self.s_err)
+        next_state: function = self.s_err # stay in error state on all inputs
         self.num_chars_read += 1
         return next_state
