@@ -1,81 +1,96 @@
-from FSA_BaseClass_Definition import FSA
+from fsa_base_class_definition import FSA
+from typing import Callable as function
 
-class ColonDash_FSA(FSA):
-    def __init__(self):
-        FSA.__init__(self,"colonDash_FSA") # You must invoke the __init__ of the parent class
-        self.accept_states.add(self.S2) # Since self.accept_states is defined in parent class, I can use it here
+class ColonDashFSA(FSA):
+    def __init__(self) -> None:
+        FSA.__init__(self, "ColonDashFSA") # You must invoke the __init__ of the parent class
+        self.accept_states.add(self.s2) # Since self.accept_states is defined in parent class, I can use it here
     
-    def S0(self):
-        current_input = self._FSA__getCurrentInput()
-        if current_input == ':': next_state = self.S1
-        else: next_state = self.Serr
-        return next_state
-    def S1(self):
-        current_input = self._FSA__getCurrentInput()
-        if current_input == '-': next_state = self.S2
-        else: next_state = self.Serr
-        return next_state
-    def S2(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.S2 # loop in state S2
-        return next_state
-    def Serr(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.Serr # loop in state Serr
-        return next_state
-    
-class Colon_FSA(FSA):
-    def __init__(self):
-        FSA.__init__(self,"colon_FSA") # You must invoke the __init__ of the parent class
-        self.accept_states.add(self.S1) # Since self.accept_states is defined in parent class, I can use it here
-    
-    def S0(self):
-        current_input = self._FSA__getCurrentInput()
-        if current_input == ':': next_state = self.S1
-        else: next_state = self.Serr
-        return next_state
-    def S1(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.S1 # loop in state S1
-        return next_state
-    def Serr(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.Serr # loop in state Serr
-        return next_state
-    
-class LeftParen_FSA(FSA):
-    def __init__(self):
-        FSA.__init__(self,"leftParen_FSA") # You must invoke the __init__ of the parent class
-        self.accept_states.add(self.S1) # Since self.accept_states is defined in parent class, I can use it here
-    
-    def S0(self):
-        current_input = self._FSA__getCurrentInput()
-        if current_input == '(': next_state = self.S1
-        else: next_state = self.Serr
-        return next_state
-    def S1(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.S1 # loop in state S1
-        return next_state
-    def Serr(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.Serr # loop in state Serr
+    def s0(self) -> function:
+        current_input: str = self._get_current_input()
+        next_state: function = None
+        if current_input == ':': next_state = self.s1
+        else: next_state = self.s_err
         return next_state
 
-class RightParen_FSA(FSA):
+    def s1(self) -> function:
+        current_input: str = self._get_current_input()
+        next_state: function = None
+        if current_input == '-': next_state = self.s2
+        else: next_state = self.s_err
+        return next_state
+
+    def s2(self) -> function:
+        current_input: str = self._get_current_input()
+        next_state: function = self.s2 # loop in state s2
+        return next_state
+
+    def s_err(self) -> function:
+        current_input: str = self._get_current_input()
+        next_state: function = self.s_err # loop in state s_err
+        return next_state
+    
+class ColonFSA(FSA):
     def __init__(self):
-        FSA.__init__(self,"rightParen_FSA") # You must invoke the __init__ of the parent class
-        self.accept_states.add(self.S1) # Since self.accept_states is defined in parent class, I can use it here
-    def S0(self):
-        current_input = self._FSA__getCurrentInput()
-        if current_input == ')': next_state = self.S1
-        else: next_state = self.Serr
+        FSA.__init__(self,"ColonFSA") # You must invoke the __init__ of the parent class
+        self.accept_states.add(self.s1) # Since self.accept_states is defined in parent class, I can use it here
+    
+    def s0(self):
+        current_input: str = self._get_current_input()
+        next_state: function = None
+        if current_input == ':': next_state = self.s1
+        else: next_state = self.s_err
         return next_state
-    def S1(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.S1 # loop in state S1
+
+    def s1(self):
+        current_input: str = self._get_current_input()
+        next_state: function = self.s1 # loop in state s1
         return next_state
-    def Serr(self):
-        current_input = self._FSA__getCurrentInput()
-        next_state = self.Serr # loop in state Serr
+
+    def s_err(self):
+        current_input = self._get_current_input()
+        next_state: function = self.s_err # loop in state s_err
+        return next_state
+    
+class LeftParenFSA(FSA):
+    def __init__(self):
+        FSA.__init__(self, "LeftParenFSA") # You must invoke the __init__ of the parent class
+        self.accept_states.add(self.s1) # Since self.accept_states is defined in parent class, I can use it here
+    
+    def s0(self):
+        current_input: str = self._get_current_input()
+        next_state: function = None
+        if current_input == '(': next_state = self.s1
+        else: next_state = self.s_err
+        return next_state
+
+    def s1(self):
+        current_input: str = self._get_current_input()
+        next_state: function = self.s1 # loop in state s1
+        return next_state
+    def s_err(self):
+        current_input: str = self._get_current_input()
+        next_state: function = self.s_err # loop in state s_err
+        return next_state
+
+class RightParenFSA(FSA):
+    def __init__(self):
+        FSA.__init__(self, "RightParenFSA") # You must invoke the __init__ of the parent class
+        self.accept_states.add(self.s1) # Since self.accept_states is defined in parent class, I can use it here
+
+    def s0(self):
+        current_input: function = self._get_current_input()
+        next_state: function = None
+        if current_input == ')': next_state = self.s1
+        else: next_state = self.s_err
+        return next_state
+
+    def s1(self):
+        current_input: str = self._get_current_input()
+        next_state: function = self.s1 # loop in state s1
+        return next_state
+
+    def s_err(self):
+        current_input: str = self._get_current_input()
+        next_state: function = self.s_err # loop in state s_err
         return next_state

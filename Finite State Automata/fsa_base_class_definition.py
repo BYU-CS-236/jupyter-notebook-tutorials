@@ -1,14 +1,15 @@
+from typing import Callable as function
 class FSA:
     """ FSA Base or Super class"""
-    def __init__(self,name):
+    def __init__(self, name: str) -> None:
         """ Class constructor """
         ###############################################################
         # Define the five elements of the FSA
         ###############################################################
         # Set of states: Each state S0, S1, S2, Serr will be represented by its own method
         # Set of inputs: I is the set of alphanumeric characters, checked by isalnum()
-        self.start_state = self.S0  # We'll always have the start state named S0
-        self.accept_states = set()  # No accept states defined
+        self.start_state: function = self.s0  # We'll always have the start state named S0
+        self.accept_states: set[function] = set()  # No accept states defined
         # Transition function: Each transition will be defined in the state methods
         
         ###############################################################
@@ -16,9 +17,9 @@ class FSA:
         # to make the FSA run and some that help us understand how 
         # the FSA works
         ###############################################################
-        self.input_string = ""      # Default empty input
-        self.FSA_name = name
-        self.num_chars_read = 0
+        self.input_string: str = ""      # Default empty input
+        self.fsa_name: str = name
+        self.num_chars_read: int = 0
             
     #########################################################
     # Define each state as a function                       #
@@ -26,7 +27,7 @@ class FSA:
     # Each transition function reads the current input and  #
     # choose the next state based on the input              #
     #########################################################
-    def S0(self):
+    def s0(self) -> NotImplemented:
         """ Every FSA must have a start state, and we'll always name 
         it S0. The method for the start state must be defined in the
         derived class since it's not defined here. """
@@ -36,7 +37,7 @@ class FSA:
     ############################
     # Public Manager Functions
     ############################
-    def Run(self,input_string):
+    def run(self, input_string: str) -> bool:
         ###############################################################
         # This function will be called to make the FSA execute
         # It records the input string,
@@ -47,28 +48,29 @@ class FSA:
             # Remember input_string
         self.input_string = input_string
             # Set current state to start state
-        current_state = self.start_state
+        current_state: function = self.start_state
             # Call current state, which starts the FSA
         while self.num_chars_read < len(self.input_string):
             current_state = current_state()
             # Check whether the FSA ended in an accept state
-        outcome = False 
+        outcome: bool = False 
         if current_state in self.accept_states: outcome = True # Accept if the FSA ended in an accept state
         return outcome
-    def Reset(self):
+    
+    def reset(self) -> None:
         self.num_chars_read = 0
         self.history = []
     
     ############################
     # Public Getters and Setters
     ############################
-    def get_Name(self): return self.FSA_name
-    def set_Name(self,FSA_name): self.FSA_name = FSA_name
+    def get_name(self) -> str: return self.fsa_name
+    def set_name(self, fsa_name: str) -> None: self.fsa_name = fsa_name
     
     ############################
     # Private Helper functions
     ############################
-    def __getCurrentInput(self):  # The double underscore makes the method private
-        current_input = self.input_string[self.num_chars_read]
+    def _get_current_input(self) -> str:  # The double underscore makes the method private
+        current_input: str = self.input_string[self.num_chars_read]
         self.num_chars_read += 1
         return current_input
