@@ -6,11 +6,11 @@ class FSA:
         ###############################################################
         # Define the five elements of the FSA
         ###############################################################
-        # Set of states: Each state S0, S1, S2, Serr will be represented by its own method
+        # Set of states: Each state S0, S1, S2, Serr will be represented by its own function
         # Set of inputs: I is the set of alphanumeric characters, checked by isalnum()
         self.start_state: function = self.s0  # We'll always have the start state named S0
         self.accept_states: set[function] = set()  # No accept states defined
-        # Transition function: Each transition will be defined in the state methods
+        # Transition function: Each transition will be defined in the state functions
         
         ###############################################################
         # Define four variables that are used within the FSA, some
@@ -29,10 +29,10 @@ class FSA:
     #########################################################
     def s0(self) -> NotImplemented:
         """ Every FSA must have a start state, and we'll always name 
-        it S0. The method for the start state must be defined in the
+        it S0. The function for the start state must be defined in the
         derived class since it's not defined here. """
         raise NotImplementedError()     # This line causes an error to 
-                                        # occur if the child classes don't implement this method
+                                        # occur if the child classes don't implement this function
 
     ############################
     # Public Manager Functions
@@ -42,8 +42,8 @@ class FSA:
         # This function will be called to make the FSA execute
         # It records the input string,
         # sets the current state to the start state
-        # and then calls a state method that returns the next state
-        # Each state method accesses the input_string
+        # and then calls a state function that returns the next state
+        # Each state function accesses the input_string
         ###############################################################
             # Remember input_string
         self.input_string = input_string
@@ -70,7 +70,7 @@ class FSA:
     ############################
     # Private Helper functions
     ############################
-    def _get_current_input(self) -> str:  # The double underscore makes the method private
+    def _get_current_input(self) -> str:  # The double underscore makes the function private
         current_input: str = self.input_string[self.num_chars_read]
         self.num_chars_read += 1
         return current_input

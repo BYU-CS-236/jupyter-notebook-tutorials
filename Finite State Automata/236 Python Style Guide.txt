@@ -1,0 +1,49 @@
+﻿Taken from the official python style guide here: https://peps.python.org/pep-0008. Please refer to it for any style questions.
+Naming Conventions:
+* General Rules:
+   * Use descriptive and meaningful names for variables, functions, and classes. Aim for clarity and readability.
+   * Avoid using single-character names or abbreviations unless they are widely understood and conventional (e.g., i, x, URL).
+   * Be consistent with your naming conventions throughout your codebase!
+
+* Casing: (when to use upper and lower case letters)
+   * Variables: snake_case
+      * my_var = “some value”
+   * Constants: UPPER_CASE
+      * MY_CONSTANT = “some value”
+   * Classes **IMPORTANT**
+      * Class names: UpperCamelCase
+         * class MyClass:
+      * Public attributes/functions: snake_case, no leading underscores
+         * def public_function()
+         * self.public_attribute
+      * Protected (for use within a class only) attributes/functions: _snake_case, one leading underscore
+         * def _protected_function()
+         * self._protected_attribute
+      * Private attributes/functions: __snake_case, two leading underscores
+         * def __private_function
+         * self.__private_attribute
+   * Function names: snake_case
+      * def my_func:
+   * Folder/Package/Module names: all-lowercase. File names: snake_case
+      * my-folder-or-package-name
+      * my_file_name.py
+   * Exceptions: UpperCamelCase, with Error as suffix if the exception is an error
+      * MyException or MyError
+      * Note: The difference between errors and exceptions by Chat-GPT: An error is a problem that prevents the program from running correctly. It can be a syntax error or a runtime error. An exception is a special type of runtime error that occurs when the code encounters an unexpected situation. It can be caught and handled using try-except blocks.
+Type Hints and Annotations
+This is super important! Please type annotate your variables and functions unless a variable/function can be different types on purpose (for code reuse, etc). This has several benefits: it keeps your code clean, makes it easier to read, makes it easier for the TAs to help you, and most importantly it helps your code avoid weird bugs involving variable types especially since the class project is fairly large, and there are pieces that build on top of one another. 
+
+* Variables
+   * Use the “:” syntax to annotate types for variables. You can do this for primitive types and class types. You only need to do this when you declare/initialize the variable.
+   * Examples:
+      * my_name: str = “John Doe”
+      * my_age: int = 23
+      * my_person: ClassPerson = ClassPerson()
+
+* Functions
+   * Use the “:” syntax for parameters. Again, you can do this for primitive types and class types. You don’t need to do this for the “self” parameter.
+   * Use the “->” syntax for return types. You can do this for primitive types, class types, or no return values. 
+   * Examples:
+      * def get_name() -> str: return name
+      * def set_name(new_name: str) -> None: name = new_name
+      * def get_parent(person: ClassPerson) -> ClassPerson: return person.parent
