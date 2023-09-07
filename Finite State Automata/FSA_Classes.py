@@ -52,7 +52,7 @@ class FSA:
 
     def s0(self) -> NotImplemented:
         """ Every FSA must have a start state, and we'll always name 
-        it s0. The method for the start state must be defined in the
+        it s0. The function for the start state must be defined in the
         derived class since it's not defined here. """
         pass
 
